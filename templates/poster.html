@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include '_head.html' %}
+<style>
+{% include '_common.css' %}
+
+@page { size: {{ page_css }}; margin: 0; }
+
+:root { --margin: 15mm; --fs: 13pt; }
+
+html, body { width: {{ page_w }}; height: {{ page_h }}; overflow: hidden; }
+
+.page {
+  width: {{ page_w }}; height: {{ page_h }};
+  display: flex; flex-direction: column;
+  padding: var(--margin) var(--margin) 0;
+}
+
+.header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8mm; margin-bottom: 8mm; }
+.title-block { flex: 1; }
+
+h1.main-title {
+  font-family: var(--heading);
+  font-size: 62pt; line-height: 1.0;
+  color: var(--accent);
+  text-transform: uppercase; letter-spacing: -0.02em;
+  word-break: break-word;
+}
+.subtitle { font-size: 16pt; font-weight: 300; color: var(--muted); margin-top: 3mm; letter-spacing: 0.03em; }
+.hdr-qr-label { color: var(--muted); }
+
+.header-rule { height: 1.5mm; background: var(--accent); margin-bottom: 8mm; }
+
+.body-content { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+.body-content img:not(.qr) { display: block; max-width: 100%; max-height: 110mm; object-fit: contain; margin: 0 auto 8mm; border-radius: 2mm; }
+
+.body-content h2 { font-family: var(--heading); font-size: 26pt; color: var(--accent); text-transform: uppercase; letter-spacing: 0.02em; margin: 6mm 0 3mm; }
+.body-content h3 { font-family: var(--heading); font-size: 18pt; text-transform: uppercase; margin: 4mm 0 2mm; }
+.body-content p  { font-size: 14pt; line-height: 1.65; margin-bottom: 4mm; }
+
+.body-content ul { list-style: none; }
+.body-content ul li { font-size: 14pt; line-height: 1.5; padding: 2.5mm 0 2.5mm 10mm; position: relative; border-bottom: 0.3pt solid var(--border); }
+.body-content ul li::before { content: '▸'; color: var(--accent); position: absolute; left: 1mm; font-size: 11pt; top: 50%; transform: translateY(-50%); }
+.body-content ul li:last-child { border-bottom: none; }
+.body-content ol { padding-left: 8mm; }
+.body-content ol li { font-size: 14pt; line-height: 1.5; padding: 2mm 0 2mm 3mm; }
+
+.footer-bar { height: 6mm; background: var(--accent); margin: 6mm calc(var(--margin) * -1) 0; margin-top: auto; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="title-block">
+      <h1 class="main-title">{{ title }}</h1>
+      {% if subtitle %}<div class="subtitle">{{ subtitle }}</div>{% endif %}
+    </div>
+    {% include '_header_qrs.html' %}
+  </div>
+  <div class="header-rule"></div>
+  <div class="body-content">{{ body }}</div>
+  <div class="footer-bar"></div>
+</div>
+</body>
+</html>

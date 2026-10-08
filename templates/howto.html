@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include '_head.html' %}
+<style>
+{% include '_common.css' %}
+
+@page {
+  size: {{ page_css }};
+  margin: 14mm 16mm 16mm;
+  @bottom-right { content: counter(page) " / " counter(pages); font-family: 'Roboto', Arial, sans-serif; font-size: 8pt; color: #999; }
+}
+
+body { font-size: 11pt; line-height: 1.6; }
+
+/* Light header: no colour band, just a heavy accent rule */
+.howto-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8mm; padding-bottom: 5mm; border-bottom: 3pt solid var(--accent); }
+.howto-tag { display: inline-block; background: var(--accent); color: #fff; font-size: 7.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; padding: 0.8mm 3mm; border-radius: 2pt; margin-bottom: 3mm; }
+h1.howto-title { font-family: var(--heading); font-size: 30pt; line-height: 1.05; text-transform: uppercase; color: var(--text); }
+.howto-subtitle { font-size: 12pt; font-weight: 300; color: var(--muted); margin-top: 2mm; }
+.hdr-qr-label { color: var(--muted); }
+
+h2 { font-family: var(--heading); font-size: 16pt; color: var(--accent); text-transform: uppercase; letter-spacing: 0.03em; margin: 7mm 0 2.5mm; clear: both; break-after: avoid; }
+h3 { font-family: var(--heading); font-size: 12pt; text-transform: uppercase; margin: 4mm 0 1.5mm; break-after: avoid; }
+p { margin-bottom: 3mm; }
+
+ul { list-style: none; padding-left: 0; margin-bottom: 3mm; }
+ul li { padding: 1.2mm 0 1.2mm 5mm; position: relative; line-height: 1.5; }
+ul li::before { content: '▸'; color: var(--accent); position: absolute; left: 0; font-size: 9pt; top: 2.2mm; }
+
+/* Numbered lists get accent number badges */
+ol { list-style: none; counter-reset: n; padding-left: 0; margin-bottom: 3mm; }
+ol li { counter-increment: n; position: relative; padding: 1.5mm 0 1.5mm 9mm; line-height: 1.5; }
+ol li::before { content: counter(n); position: absolute; left: 0; top: 1.2mm; width: 6mm; height: 6mm; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: 9pt; text-align: center; line-height: 6mm; }
+
+img:not(.qr) { display: block; max-width: 100%; max-height: 85mm; object-fit: contain; margin: 4mm auto; border-radius: 1.5mm; }
+.howto-header + .facts { margin-top: 5mm; }
+</style>
+</head>
+<body>
+
+<div class="howto-header">
+  <div>
+    <div class="howto-tag">{{ tag }}</div>
+    <h1 class="howto-title">{{ title }}</h1>
+    {% if subtitle %}<div class="howto-subtitle">{{ subtitle }}</div>{% endif %}
+  </div>
+  {% include '_header_qrs.html' %}
+</div>
+
+{% include '_facts.html' %}
+
+{{ body }}
+
+</body>
+</html>

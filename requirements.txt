@@ -1,0 +1,6 @@
+markdown
+python-frontmatter
+qrcode[pil]
+Pillow
+Jinja2
+weasyprint

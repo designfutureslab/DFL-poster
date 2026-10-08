@@ -1,0 +1,7 @@
+{% if facts %}
+<div class="facts">
+  {% for key, value in facts %}
+  <div class="fact"><span class="fact-k">{{ key }}</span><span class="fact-v">{{ value }}</span></div>
+  {% endfor %}
+</div>
+{% endif %}

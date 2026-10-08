@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include '_head.html' %}
+<style>
+{% include '_common.css' %}
+
+@page {
+  size: {{ page_css }};
+  margin: 12mm 14mm 14mm;
+  @bottom-center { content: counter(page) " / " counter(pages); font-family: 'Roboto', Arial, sans-serif; font-size: 8pt; color: #999; }
+}
+@page :first { margin-top: 0; }
+
+:root { --step-num-sz: 22mm; }
+
+body { font-size: 11pt; line-height: 1.6; }
+
+.page-header { background: var(--accent); color: #fff; padding: 10mm 14mm 9mm; margin: 0 -14mm; display: flex; justify-content: space-between; align-items: center; gap: 8mm; }
+.header-tag { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 0.18em; opacity: 0.85; margin-bottom: 1.5mm; }
+h1.guide-title { font-family: var(--heading); font-size: 32pt; line-height: 1.0; text-transform: uppercase; letter-spacing: -0.01em; }
+.guide-subtitle { font-size: 12pt; font-weight: 300; opacity: 0.9; margin-top: 2.5mm; }
+.hdr-qr-label { color: #fff; opacity: 0.9; }
+
+.intro { margin: 6mm 0 4mm; line-height: 1.65; }
+.intro p { margin-bottom: 3mm; }
+
+.steps { margin-top: 2mm; }
+.step { display: flex; gap: 5mm; margin-bottom: 5mm; break-inside: avoid; border: 0.75pt solid var(--border); border-radius: 3pt; overflow: hidden; }
+.step-badge { flex-shrink: 0; width: var(--step-num-sz); background: var(--accent); display: flex; flex-direction: column; align-items: center; padding-top: 4mm; }
+.step-number { font-family: var(--heading); font-size: 30pt; color: #fff; line-height: 1.0; }
+
+.step-body { flex: 1; padding: 4mm 5mm 4mm 0; }
+.step-title { font-family: var(--heading); font-size: 14pt; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 2.5mm; line-height: 1.1; }
+.step-body p { margin-bottom: 2.5mm; }
+.step-body p:last-child { margin-bottom: 0; }
+.step-body ul { list-style: none; margin-bottom: 2.5mm; }
+.step-body ul li { padding: 1mm 0 1mm 5mm; position: relative; line-height: 1.5; }
+.step-body ul li::before { content: '▸'; color: var(--accent); position: absolute; left: 0; font-size: 9pt; top: 1.5mm; }
+.step-body ol { padding-left: 5mm; margin-bottom: 2.5mm; }
+.step-body ol li { padding: 1mm 0; line-height: 1.5; }
+.step-body img:not(.qr) { display: block; max-width: 100%; max-height: 70mm; object-fit: contain; margin: 3mm 0; border-radius: 2pt; border: 0.5pt solid var(--border); }
+.step-body::after { content: ""; display: block; clear: both; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="header-tag">{{ tag }}</div>
+    <h1 class="guide-title">{{ title }}</h1>
+    {% if subtitle %}<div class="guide-subtitle">{{ subtitle }}</div>{% endif %}
+  </div>
+  {% include '_header_qrs.html' %}
+</div>
+
+{% include '_facts.html' %}
+
+{% if intro %}<div class="intro">{{ intro }}</div>{% endif %}
+
+<div class="steps">
+  {% for step in steps %}
+  <div class="step">
+    <div class="step-badge"><div class="step-number">{{ "%02d"|format(step.number) }}</div></div>
+    <div class="step-body">
+      <div class="step-title">{{ step.title }}</div>
+      {{ step.content }}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+</body>
+</html>

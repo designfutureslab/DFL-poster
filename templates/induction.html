@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include '_head.html' %}
+<style>
+{% include '_common.css' %}
+
+@page {
+  size: {{ page_css }};
+  margin: 12mm 15mm 16mm;
+  @bottom-left   { content: "{{ title }}"; font-family: 'Roboto', Arial, sans-serif; font-size: 8pt; color: #999; }
+  @bottom-right  { content: "Page " counter(page) " of " counter(pages); font-family: 'Roboto', Arial, sans-serif; font-size: 8pt; color: #999; }
+}
+@page :first { margin-top: 0; }
+
+body { font-size: 11pt; line-height: 1.6; counter-reset: section; }
+
+.cover-header {
+  background: var(--accent); color: #fff;
+  padding: 12mm 15mm 10mm; margin: 0 -15mm;
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 8mm;
+}
+.cover-tag { font-size: 8pt; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.85; margin-bottom: 2mm; }
+h1.cover-title { font-family: var(--heading); font-size: 38pt; line-height: 1.05; text-transform: uppercase; letter-spacing: -0.01em; }
+.cover-subtitle { font-size: 14pt; font-weight: 300; opacity: 0.9; margin-top: 3mm; }
+.hdr-qr-label { color: #fff; opacity: 0.9; }
+
+/* Formal numbered sections */
+h2 {
+  font-family: var(--heading); font-size: 18pt; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.04em;
+  margin: 8mm 0 3mm; padding-bottom: 1.5mm; border-bottom: 1.5pt solid var(--accent);
+  counter-increment: section; clear: both; break-after: avoid;
+}
+h2::before { content: counter(section) ".  "; }
+h3 { font-family: var(--heading); font-size: 13pt; text-transform: uppercase; letter-spacing: 0.03em; margin: 5mm 0 2mm; break-after: avoid; }
+h4 { font-size: 11pt; font-weight: 700; margin: 4mm 0 1.5mm; break-after: avoid; }
+
+p { margin-bottom: 3mm; }
+ul, ol { padding-left: 6mm; margin-bottom: 3mm; }
+ul { list-style: none; }
+ul li { padding: 1.5mm 0 1.5mm 5mm; position: relative; line-height: 1.5; }
+ul li::before { content: '▸'; color: var(--accent); position: absolute; left: 0; font-size: 9pt; top: 2.5mm; }
+ol li { padding: 1.5mm 0; line-height: 1.5; }
+img:not(.qr) { display: block; max-width: 100%; max-height: 80mm; object-fit: contain; margin: 4mm auto; border-radius: 1.5mm; }
+
+/* ── Quiz ─────────────────────────────────────────────────────── */
+.quiz { break-before: page; }
+.quiz-meta { display: flex; gap: 8mm; margin: 4mm 0 5mm; font-size: 10pt; }
+.quiz-meta .field { flex: 1; border-bottom: 0.75pt solid var(--text); padding-bottom: 0.5mm; }
+.quiz-meta .field span { font-size: 7pt; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.question { margin: 0 0 6mm; break-inside: avoid; }
+.q-text { font-weight: 700; margin-bottom: 2mm; }
+.q-text .q-n { color: var(--accent); font-family: var(--heading); margin-right: 2mm; }
+.option { display: flex; align-items: flex-start; gap: 3mm; padding: 1mm 0 1mm 8mm; }
+.box { flex-shrink: 0; width: 4mm; height: 4mm; border: 1pt solid var(--text); border-radius: 1pt; margin-top: 0.9mm; }
+.opt-letter { font-weight: 700; color: var(--muted); width: 4mm; }
+.answer-line { height: 8mm; border-bottom: 0.5pt solid #999; margin-left: 8mm; }
+.pass-mark { font-size: 10pt; color: var(--muted); margin-bottom: 3mm; }
+
+/* ── Sign-off ─────────────────────────────────────────────────── */
+.signoff { margin-top: 8mm; border: 1pt solid var(--text); border-radius: 3pt; padding: 5mm 6mm; break-inside: avoid; }
+.signoff h3 { margin-top: 0; }
+.signoff .declaration { font-size: 10.5pt; margin-bottom: 5mm; }
+.sig-row { display: flex; gap: 6mm; margin-top: 12mm; }
+.sig { flex: 1; border-top: 0.75pt solid var(--text); padding-top: 1mm; font-size: 7pt; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.sig.wide { flex: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="cover-header">
+  <div>
+    <div class="cover-tag">{{ tag }}</div>
+    <h1 class="cover-title">{{ title }}</h1>
+    {% if subtitle %}<div class="cover-subtitle">{{ subtitle }}</div>{% endif %}
+  </div>
+  {% include '_header_qrs.html' %}
+</div>
+
+{% include '_facts.html' %}
+
+{{ body }}
+
+{% if quiz %}
+<div class="quiz">
+  <h2>{{ quiz.title }}</h2>
+  {{ quiz.intro }}
+  <div class="quiz-meta">
+    <div class="field"><span>Name</span></div>
+    <div class="field"><span>Date</span></div>
+  </div>
+  {% if pass_mark %}<div class="pass-mark">Pass mark: <strong>{{ pass_mark }}</strong></div>{% endif %}
+  {% for q in quiz.questions %}
+  <div class="question">
+    <div class="q-text"><span class="q-n">{{ q.n }}.</span>{{ q.text }}</div>
+    {% if q.options %}
+      {% for o in q.options %}
+      <div class="option"><span class="box"></span><span class="opt-letter">{{ "ABCDEFGH"[loop.index0] }}</span><span>{{ o.text }}</span></div>
+      {% endfor %}
+    {% else %}
+      <div class="answer-line"></div><div class="answer-line"></div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if signoff %}
+<div class="signoff">
+  <h3>Declaration &amp; sign-off</h3>
+  <p class="declaration">{{ declaration }}</p>
+  <div class="sig-row">
+    <div class="sig wide">Participant name</div>
+    <div class="sig wide">Signature</div>
+    <div class="sig">Date</div>
+  </div>
+  <div class="sig-row">
+    <div class="sig wide">Assessor name</div>
+    <div class="sig wide">Assessor signature</div>
+    <div class="sig">Date</div>
+  </div>
+</div>
+{% endif %}
+
+</body>
+</html>

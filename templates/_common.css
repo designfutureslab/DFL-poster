@@ -1,0 +1,92 @@
+{% if clancey_data %}
+@font-face {
+  font-family: 'Clancey';
+  src: url('{{ clancey_data }}') format('{{ clancey_fmt }}');
+  font-weight: normal;
+  font-style: normal;
+}
+{% endif %}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --accent:    {{ accent }};
+  --text:      #1A1A2E;
+  --muted:     #555;
+  --bg-light:  #F7F7F7;
+  --border:    #E0E0E0;
+  --heading:   {% if clancey_data %}'Clancey', {% endif %}Impact, 'Arial Black', sans-serif;
+  --body-font: 'Roboto', Arial, sans-serif;
+  --fs:        11pt;
+}
+
+body { font-family: var(--body-font); color: var(--text); background: #fff; }
+
+img:not(.qr) { break-inside: avoid; }
+
+/* ── Callouts:  > [!WARNING] Bold title  ─────────────────────── */
+.callout {
+  --c: var(--accent); --bg: var(--bg-light);
+  border-left: 4pt solid var(--c);
+  background: var(--bg);
+  border-radius: 0 3pt 3pt 0;
+  margin: 4mm 0;
+  font-size: var(--fs);
+  line-height: 1.5;
+  break-inside: avoid;
+  overflow: hidden;
+}
+.callout-danger    { --c: #C62828; --bg: #FFEBEE; }
+.callout-warning   { --c: #E65100; --bg: #FFF3E0; }
+.callout-important { --c: #6A1B9A; --bg: #F3E5F5; }
+.callout-note      { --c: #1565C0; --bg: #E8F0FE; }
+.callout-tip       { --c: #2E7D32; --bg: #E8F5E9; }
+
+.callout-head { display: flex; align-items: center; gap: 3mm; padding: 2.5mm 4mm 0; }
+.callout-label {
+  background: var(--c); color: #fff;
+  font-weight: 900; font-size: 0.72em;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.6mm 2.5mm; border-radius: 2pt;
+  white-space: nowrap;
+}
+.callout-title { font-weight: 700; font-size: 1.05em; color: var(--text); }
+.callout-body { padding: 1.5mm 4mm 2.5mm; }
+.callout-head:last-child { padding-bottom: 2.5mm; }
+.callout-body p { margin: 0 0 1.5mm; font-size: 1em; }
+.callout-body p:last-child { margin-bottom: 0; }
+
+blockquote {
+  border-left: 2pt solid var(--border);
+  padding: 1mm 0 1mm 4mm; margin: 3mm 0;
+  color: var(--muted); font-style: italic;
+}
+
+/* ── QR codes ─────────────────────────────────────────────────── */
+.qr-inline { width: 18mm; height: 18mm; vertical-align: middle; margin: 1mm 2mm; }
+
+/* [QR: caption](url) on its own line; after a heading it sits to the right */
+.qr-block { width: 32mm; margin: 2mm auto 3mm; text-align: center; break-inside: avoid; }
+.qr-block img { display: block; width: 26mm; height: 26mm; margin: 0 auto; }
+.qr-caption { font-size: 7.5pt; line-height: 1.25; color: var(--muted); margin-top: 1mm; }
+h2 + .qr-block, h3 + .qr-block, .step-title + .qr-block { float: right; margin: 1mm 0 3mm 5mm; }
+
+.hdr-qrs { display: flex; gap: 4mm; flex-shrink: 0; align-items: flex-start; }
+.hdr-qr { width: 28mm; text-align: center; }
+.hdr-qr img { display: block; width: 28mm; height: 28mm; background: #fff; padding: 1.5mm; border-radius: 2mm; border: 0.5pt solid var(--border); }
+.hdr-qr-label { font-size: 6.5pt; line-height: 1.2; margin-top: 1.2mm; }
+
+/* ── Facts strip (frontmatter `facts:`) ───────────────────────── */
+.facts { display: flex; flex-wrap: wrap; border: 0.75pt solid var(--border); border-radius: 3pt; margin: 5mm 0; break-inside: avoid; }
+.fact { flex: 1 1 30%; padding: 2mm 4mm; border-right: 0.5pt solid var(--border); border-bottom: 0.5pt solid var(--border); margin-right: -0.5pt; margin-bottom: -0.5pt; }
+.fact-k { display: block; font-size: 7pt; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+.fact-v { display: block; font-size: 10.5pt; font-weight: 700; }
+
+/* ── Tables & code ────────────────────────────────────────────── */
+table { width: 100%; border-collapse: collapse; margin: 4mm 0; font-size: 0.92em; break-inside: avoid; }
+th { background: var(--accent); color: #fff; font-family: var(--heading); text-transform: uppercase; letter-spacing: 0.05em; padding: 2mm 3mm; text-align: left; }
+td { padding: 2mm 3mm; border-bottom: 0.5pt solid var(--border); vertical-align: top; }
+tr:nth-child(even) td { background: var(--bg-light); }
+code { font-family: 'Courier New', monospace; font-size: 0.9em; background: var(--bg-light); padding: 0.3mm 1.5mm; border-radius: 1.5pt; border: 0.5pt solid var(--border); }
+hr { border: none; border-top: 0.5pt solid var(--border); margin: 5mm 0; }
+.page-break { break-before: page; }

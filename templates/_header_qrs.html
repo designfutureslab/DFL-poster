@@ -1,0 +1,10 @@
+{% if qr_corner or qr_video %}
+<div class="hdr-qrs">
+  {% if qr_video %}
+  <div class="hdr-qr"><img class="qr" src="{{ qr_video }}" alt="Video QR code"><div class="hdr-qr-label">{{ qr_video_label }}</div></div>
+  {% endif %}
+  {% if qr_corner %}
+  <div class="hdr-qr"><img class="qr" src="{{ qr_corner }}" alt="QR code"><div class="hdr-qr-label">{{ qr_corner_label }}</div></div>
+  {% endif %}
+</div>
+{% endif %}
